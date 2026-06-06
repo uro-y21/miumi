@@ -19,4 +19,178 @@
             position: relative;
         }
 
-        @keyframes rainbow-bg
+        @keyframes rainbow-bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .flying-text {
+            position: absolute;
+            top: 20%;
+            font-size: 120px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 20px #fff, 0 0 40px #ff00ff, 0 0 60px #00ffff, 0 0 80px #ffff00;
+            white-space: nowrap;
+            animation: slideFromRight 4s linear forwards;
+            z-index: 10;
+            transform: rotate(-12deg);
+        }
+
+        @keyframes slideFromRight {
+            from { transform: translateX(150%) rotate(-12deg); }
+            to { transform: translateX(-150%) rotate(-12deg); }
+        }
+
+        .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 180px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff, 0 0 90px #ffff00, 0 0 120px #ff0000;
+            animation: flash 0.2s infinite alternate, rainbow-text 0.4s linear infinite;
+            z-index: 20;
+            letter-spacing: -10px;
+        }
+
+        @keyframes flash {
+            from { opacity: 0.7; transform: translate(-50%, -50%) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        @keyframes rainbow-text {
+            0% { color: #ff0000; } 14% { color: #ff7f00; } 28% { color: #ffff00; }
+            42% { color: #00ff00; } 57% { color: #0000ff; } 71% { color: #4b0082; }
+            85% { color: #8b00ff; } 100% { color: #ff0000; }
+        }
+
+        .nagoya-item {
+            position: absolute;
+            font-size: 80px;
+            opacity: 0;
+            z-index: 5;
+            text-shadow: 0 0 30px white;
+            animation: popNagoya 3s ease-in-out infinite;
+        }
+
+        @keyframes popNagoya {
+            0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+            20% { transform: scale(1.3) rotate(15deg); opacity: 1; }
+            40% { transform: scale(0.9) rotate(-10deg); }
+            60% { transform: scale(1.2) rotate(20deg); }
+            80% { transform: scale(0.8) rotate(-15deg); }
+            100% { transform: scale(1.1) rotate(0deg); opacity: 0.9; }
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            pointer-events: none;
+            z-index: 15;
+            animation: flash-overlay 0.15s infinite alternate;
+        }
+
+        @keyframes flash-overlay {
+            from { opacity: 0.4; } to { opacity: 0.7; }
+        }
+
+        .sparkles { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 8; }
+    </style>
+</head>
+<body>
+    <div class="flying-text">名古屋のセックス</div>
+    <div class="center-text">デラックス</div>
+    <div class="overlay"></div>
+    <canvas class="sparkles" id="sparkles"></canvas>
+
+    <script>
+        const nagoyaItems = ['🍜','🐟','🏯','🍛','🍡','🐔','🌸','🚄','🍵','🎋','🥢','🔥'];
+        
+        function createNagoyaItem() {
+            const item = document.createElement('div');
+            item.className = 'nagoya-item';
+            item.textContent = nagoyaItems[Math.floor(Math.random() * nagoyaItems.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.top = Math.random() * 80 + 'vh';
+            item.style.animationDuration = (2 + Math.random() * 3) + 's';
+            const size = 60 + Math.random() * 60;
+            item.style.fontSize = size + 'px';
+            document.body.appendChild(item);
+            setTimeout(() => item.remove(), 6000);
+        }
+
+        setInterval(() => {
+            for (let i = 0; i < 3; i++) createNagoyaItem();
+        }, 400);
+
+        // キラキラ演出
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 6 + 2;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random()*360},100%,80%)`;
+                this.life = 80 + Math.random() * 40;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY; this.life--; this.size *= 0.98;
+                if (this.life <= 0 || this.size <= 0.5) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 150; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // クリックでさらに派手に
+        document.addEventListener('click', () => {
+            for (let i = 0; i < 30; i++) createNagoyaItem();
+        });
+
+        // スペースキーで大爆発
+        document.addEventListener('keydown', e => {
+            if (e.key === ' ') {
+                for (let i = 0; i < 50; i++) createNagoyaItem();
+            }
+        });
+
+        // 定期的に新しい飛ぶ文字
+        setInterval(() => {
+            const t = document.createElement('div');
+            t.className = 'flying-text';
+            t.textContent = '名古屋のセックス';
+            t.style.top = (15 + Math.random() * 50) + '%';
+            t.style.animationDuration = (3 + Math.random() * 3) + 's';
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 8000);
+        }, 2500);
+    </script>
+</body>
+</html>
