@@ -11,22 +11,28 @@
 
         body {
             overflow: hidden;
-            background: linear-gradient(45deg, #1a0033, #330033, #000000);
-            background-size: 400% 400%;
-            animation: bg-pulse 10s linear infinite;
+            background: #1a0033;
             font-family: 'Impact', 'Noto Sans JP', sans-serif;
             height: 100vh;
             position: relative;
             cursor: pointer;
+            transition: background 1.5s ease-in-out;
         }
 
-        @keyframes bg-pulse {
+        /* デラックス登場時に激しくなる背景 */
+        body.intense {
+            background: linear-gradient(45deg, #ff0000, #ff00ff, #00ffff, #ffff00, #ff0000);
+            background-size: 500% 500%;
+            animation: rainbow-bg 0.35s linear infinite;
+        }
+
+        @keyframes rainbow-bg {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 名古屋のセックス（ゆったり・1回だけ長く） */
+        /* 名古屋のセックス */
         .flying-text {
             position: absolute;
             font-size: 105px;
@@ -68,13 +74,13 @@
         }
 
         @keyframes keepFlashing {
-            0%   { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 110px #ffff00; }
-            14%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 110px #00ff00; }
-            28%  { color: #00ff00; text-shadow: 0 0 50px #00ff00, 0 0 110px #00ffff; }
-            42%  { color: #00ffff; text-shadow: 0 0 50px #00ffff, 0 0 110px #ff00ff; }
-            57%  { color: #ff00ff; text-shadow: 0 0 50px #ff00ff, 0 0 110px #ffff00; }
-            71%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 110px #ff0000; }
-            100% { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 110px #ffff00; }
+            0%   { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 120px #ffff00; }
+            14%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 120px #00ff00; }
+            28%  { color: #00ff00; text-shadow: 0 0 50px #00ff00, 0 0 120px #00ffff; }
+            42%  { color: #00ffff; text-shadow: 0 0 50px #00ffff, 0 0 120px #ff00ff; }
+            57%  { color: #ff00ff; text-shadow: 0 0 50px #ff00ff, 0 0 120px #ffff00; }
+            71%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 120px #ff0000; }
+            100% { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 120px #ffff00; }
         }
 
         .nagoya-item {
@@ -95,16 +101,42 @@
         .overlay {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.18) 30%, rgba(255,80,255,0.25) 65%, transparent 80%);
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 30%, rgba(255,80,255,0.25) 65%, transparent);
             z-index: 15;
             pointer-events: none;
             opacity: 0;
-            animation: burst-overlay 0.14s infinite alternate 10s;
+            animation: burst-overlay 0.14s infinite alternate 9.8s;
         }
 
         @keyframes burst-overlay {
             from { opacity: 0.15; }
-            to { opacity: 0.65; }
+            to { opacity: 0.55; }
+        }
+
+        /* 了解だがや ポップアップ */
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(#ff00ff, #ffff00);
+            color: #000;
+            font-size: 42px;
+            font-weight: 900;
+            padding: 40px 60px;
+            border: 8px solid #fff;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 60px #ffff00, 0 0 100px #ff00ff;
+            z-index: 100;
+            cursor: pointer;
+            animation: popupAppear 0.6s forwards 11.5s;
+            white-space: nowrap;
+            display: none;
+        }
+
+        @keyframes popupAppear {
+            to { transform: translate(-50%, -50%) scale(1); }
         }
 
         canvas { position: absolute; top: 0; left: 0; z-index: 8; pointer-events: none; }
@@ -114,6 +146,11 @@
     <div class="center-text">デラックス</div>
     <div class="overlay"></div>
     <canvas id="sparkles"></canvas>
+
+    <!-- 了解だがや ポップアップ -->
+    <div id="popup" onclick="this.style.display='none';">
+        了解だがや(笑)
+    </div>
 
     <script>
         const nagoyaItems = ['🍜','🐟','🏯','🍛','🍡','🐔','🌸','🚄','🍵','🎋','🥢','🔥','🦀','🍤','🏮'];
@@ -139,10 +176,10 @@
             setTimeout(() => t.remove(), 6500);
         }
 
-        // 飛ぶ文字（1回だけ長めに）
+        // 飛ぶ文字
         setTimeout(() => createFlyingText(), 400);
 
-        // 名古屋名物はデラックス登場直前〜登場後にスタート
+        // 名古屋名物
         setTimeout(() => {
             setInterval(() => {
                 for (let i = 0; i < 4; i++) createNagoyaItem();
@@ -195,14 +232,22 @@
         }
         animate();
 
-        // デラックス登場後の大爆発
+        // デラックス登場と同時に背景をぶわーっと激しくする
         setTimeout(() => {
+            document.body.classList.add('intense');
             for (let i = 0; i < 80; i++) createNagoyaItem();
-        }, 10200);
+        }, 6200);
 
-        // クリックでさらに派手
-        document.addEventListener('click', () => {
-            for (let i = 0; i < 45; i++) createNagoyaItem();
+        // 了解だがや ポップアップ
+        setTimeout(() => {
+            document.getElementById('popup').style.display = 'block';
+        }, 11500);
+
+        // クリックで追加演出
+        document.addEventListener('click', (e) => {
+            if (e.target.id !== 'popup') {
+                for (let i = 0; i < 35; i++) createNagoyaItem();
+            }
         });
     </script>
 </body>
