@@ -13,7 +13,7 @@
             overflow: hidden;
             background: linear-gradient(45deg, #1a0033, #330033, #000000);
             background-size: 400% 400%;
-            animation: bg-pulse 8s linear infinite;
+            animation: bg-pulse 10s linear infinite;
             font-family: 'Impact', 'Noto Sans JP', sans-serif;
             height: 100vh;
             position: relative;
@@ -26,22 +26,21 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 飛ぶ文字（落ち着いた演出） */
+        /* 名古屋のセックス（ゆったり・1回だけ長く） */
         .flying-text {
             position: absolute;
-            font-size: 100px;
+            font-size: 105px;
             font-weight: 900;
             color: #ffccff;
-            text-shadow: 0 0 20px #ff99ff;
+            text-shadow: 0 0 25px #ff99ff;
             white-space: nowrap;
-            animation: slideFromRight 5s linear forwards;
+            animation: slideFromRight 6s linear forwards;
             z-index: 10;
-            opacity: 0.9;
         }
 
         @keyframes slideFromRight {
-            from { transform: translateX(120vw); }
-            to { transform: translateX(-120vw); }
+            from { transform: translateX(130vw); }
+            to { transform: translateX(-130vw); }
         }
 
         /* デラックス */
@@ -50,63 +49,62 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.05);
-            font-size: 260px;
+            font-size: 245px;
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 0 30px #fff;
+            text-shadow: 0 0 40px #ffffff;
             z-index: 20;
             letter-spacing: -12px;
             opacity: 0;
-            animation: zoomIn 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 2.2s,
-                       postFlash 0.18s linear infinite 5.2s;
+            animation: zoomIn 3.8s cubic-bezier(0.23, 1, 0.32, 1) forwards 6.2s,
+                       keepFlashing 0.16s linear infinite 10s;
         }
 
         @keyframes zoomIn {
             0%   { transform: translate(-50%, -50%) scale(0.05); opacity: 0; }
-            70%  { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
-            85%  { transform: translate(-50%, -50%) scale(0.96); }
+            65%  { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+            82%  { transform: translate(-50%, -50%) scale(0.97); }
             100% { transform: translate(-50%, -50%) scale(1.0); }
         }
 
-        @keyframes postFlash {
-            0%   { color: #ff0000; text-shadow: 0 0 40px #ff0000, 0 0 90px #ffff00; }
-            14%  { color: #ffff00; text-shadow: 0 0 40px #ffff00, 0 0 90px #00ff00; }
-            28%  { color: #00ff00; text-shadow: 0 0 40px #00ff00, 0 0 90px #00ffff; }
-            42%  { color: #00ffff; text-shadow: 0 0 40px #00ffff, 0 0 90px #ff00ff; }
-            57%  { color: #ff00ff; text-shadow: 0 0 40px #ff00ff, 0 0 90px #ffff00; }
-            71%  { color: #ffff00; text-shadow: 0 0 40px #ffff00, 0 0 90px #ff0000; }
-            100% { color: #ff0000; text-shadow: 0 0 40px #ff0000, 0 0 90px #ffff00; }
+        @keyframes keepFlashing {
+            0%   { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 110px #ffff00; }
+            14%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 110px #00ff00; }
+            28%  { color: #00ff00; text-shadow: 0 0 50px #00ff00, 0 0 110px #00ffff; }
+            42%  { color: #00ffff; text-shadow: 0 0 50px #00ffff, 0 0 110px #ff00ff; }
+            57%  { color: #ff00ff; text-shadow: 0 0 50px #ff00ff, 0 0 110px #ffff00; }
+            71%  { color: #ffff00; text-shadow: 0 0 50px #ffff00, 0 0 110px #ff0000; }
+            100% { color: #ff0000; text-shadow: 0 0 50px #ff0000, 0 0 110px #ffff00; }
         }
 
         .nagoya-item {
             position: absolute;
-            font-size: 70px;
+            font-size: 72px;
             z-index: 5;
-            text-shadow: 0 0 20px #ffff99;
-            animation: popNagoya 3s ease-in-out infinite;
-            opacity: 0.85;
+            text-shadow: 0 0 25px #ffff99;
+            animation: popNagoya 2.8s ease-in-out infinite;
         }
 
         @keyframes popNagoya {
             0% { transform: scale(0.1) rotate(0deg); opacity: 0; }
-            25% { transform: scale(1.3) rotate(20deg); opacity: 1; }
-            60% { transform: scale(0.95) rotate(-15deg); }
-            100% { transform: scale(1.05) rotate(5deg); opacity: 0.9; }
+            22% { transform: scale(1.35) rotate(25deg); opacity: 1; }
+            55% { transform: scale(0.92) rotate(-20deg); }
+            100% { transform: scale(1.08) rotate(8deg); opacity: 0.9; }
         }
 
         .overlay {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.25) 30%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.18) 30%, rgba(255,80,255,0.25) 65%, transparent 80%);
             z-index: 15;
             pointer-events: none;
             opacity: 0;
-            animation: big-burst 0.15s infinite alternate 5.2s;
+            animation: burst-overlay 0.14s infinite alternate 10s;
         }
 
-        @keyframes big-burst {
-            from { opacity: 0.2; background-color: rgba(255, 100, 255, 0.3); }
-            to   { opacity: 0.75; background-color: rgba(255, 255, 100, 0.25); }
+        @keyframes burst-overlay {
+            from { opacity: 0.15; }
+            to { opacity: 0.65; }
         }
 
         canvas { position: absolute; top: 0; left: 0; z-index: 8; pointer-events: none; }
@@ -126,34 +124,32 @@
             item.textContent = nagoyaItems[Math.floor(Math.random() * nagoyaItems.length)];
             item.style.left = Math.random() * 100 + 'vw';
             item.style.top = Math.random() * 85 + 'vh';
-            item.style.animationDuration = (2.5 + Math.random() * 2) + 's';
-            item.style.fontSize = (50 + Math.random() * 60) + 'px';
+            item.style.animationDuration = (2.2 + Math.random() * 2.5) + 's';
+            item.style.fontSize = (52 + Math.random() * 65) + 'px';
             document.body.appendChild(item);
-            setTimeout(() => item.remove(), 7000);
+            setTimeout(() => item.remove(), 7500);
         }
 
         function createFlyingText() {
             const t = document.createElement('div');
             t.className = 'flying-text';
             t.textContent = '名古屋のセックス';
-            t.style.top = (20 + Math.random() * 50) + '%';
-            t.style.fontSize = (85 + Math.random() * 35) + 'px';
+            t.style.top = (25 + Math.random() * 45) + '%';
             document.body.appendChild(t);
-            setTimeout(() => t.remove(), 5500);
+            setTimeout(() => t.remove(), 6500);
         }
 
-        // 落ち着いた飛ぶ文字（2回だけ）
-        setTimeout(() => createFlyingText(), 300);
-        setTimeout(() => createFlyingText(), 1400);
+        // 飛ぶ文字（1回だけ長めに）
+        setTimeout(() => createFlyingText(), 400);
 
-        // 名古屋名物はデラックス登場後に本格スタート
+        // 名古屋名物はデラックス登場直前〜登場後にスタート
         setTimeout(() => {
             setInterval(() => {
-                for (let i = 0; i < 3; i++) createNagoyaItem();
-            }, 350);
-        }, 3200);
+                for (let i = 0; i < 4; i++) createNagoyaItem();
+            }, 320);
+        }, 5800);
 
-        // キラキラ粒子
+        // キラキラ
         const canvas = document.getElementById('sparkles');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -170,18 +166,18 @@
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 2;
-                this.speedX = Math.random() * 4 - 2;
-                this.speedY = Math.random() * 4 - 2;
-                this.color = `hsl(${Math.random()*360}, 100%, 85%)`;
-                this.life = 80 + Math.random() * 60;
+                this.size = Math.random() * 6 + 2.5;
+                this.speedX = Math.random() * 5 - 2.5;
+                this.speedY = Math.random() * 5 - 2.5;
+                this.color = `hsl(${Math.random()*360},100%,88%)`;
+                this.life = 90 + Math.random() * 50;
             }
             update() {
-                this.x += this.speedX; this.y += this.speedY; this.life--; this.size *= 0.975;
+                this.x += this.speedX; this.y += this.speedY; this.life--; this.size *= 0.972;
                 if (this.life <= 0 || this.size <= 0.5) this.reset();
             }
             draw() {
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 20;
                 ctx.shadowColor = this.color;
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
@@ -190,7 +186,7 @@
             }
         }
 
-        for (let i = 0; i < 180; i++) particles.push(new Particle());
+        for (let i = 0; i < 220; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -199,33 +195,14 @@
         }
         animate();
 
-        // パンパカパーーン演出（デラックス停止後）
-        function bigBurst() {
-            for (let i = 0; i < 120; i++) {
-                const item = document.createElement('div');
-                item.className = 'nagoya-item';
-                item.textContent = nagoyaItems[Math.floor(Math.random() * nagoyaItems.length)];
-                item.style.left = Math.random() * 100 + 'vw';
-                item.style.top = Math.random() * 100 + 'vh';
-                item.style.animationDuration = '1.2s';
-                item.style.fontSize = (40 + Math.random() * 90) + 'px';
-                document.body.appendChild(item);
-                setTimeout(() => item.remove(), 2000);
-            }
-            // 粒子も一気に爆発
-            particles.forEach(p => {
-                p.speedX *= 3;
-                p.speedY *= 3;
-                p.life = 40;
-            });
-        }
+        // デラックス登場後の大爆発
+        setTimeout(() => {
+            for (let i = 0; i < 80; i++) createNagoyaItem();
+        }, 10200);
 
-        // デラックス登場後に大爆発
-        setTimeout(bigBurst, 5200);
-
-        // クリックで追加爆発
+        // クリックでさらに派手
         document.addEventListener('click', () => {
-            for (let i = 0; i < 50; i++) createNagoyaItem();
+            for (let i = 0; i < 45; i++) createNagoyaItem();
         });
     </script>
 </body>
